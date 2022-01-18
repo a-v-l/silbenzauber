@@ -8,7 +8,7 @@ const consonant: string[] = ['d', 'r', 'w', 'p', 's', 'l', 'm', 't', 'n', 'z', '
 
 /**
  * 
- * @param level - How many consonants should be included
+ * @param level - How many different consonants should be included
  * @param extended - Use umlaute as well?
  * @returns {sting} A syllable containing a consonant and a vokal or an umlaut
  */
@@ -31,66 +31,84 @@ function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
+/**
+ * 
+ * @param word_length - How many syllables should the word contain
+ * @param level - How many different consonants should be included
+ * @param extended - Use umlaute as well?
+ * @returns {array} Array of syllables. The first letter of the first array is uppercase.
+ */
+function getWordSyllables(word_length: number, level: number, extended: boolean) {
+  // Array of syllables
+  let syllables: string[] = [];
+  for (let i = 0; i < word_length; i++) {
+    syllables.push(getRandomSyllable(level, extended));
+  }
+  // First letter uppercase
+  syllables[0] = syllables[0][0].toUpperCase() + syllables[0].substring(1)
+
+  return syllables
+}
+
 const config: { level: number; speed: number; extended: boolean; word_length: number } = {
   level: 9,
-  speed: 2,
+  speed: 5,
   extended: false,
   word_length: 2
 }
 
-type SyllablProps = {
-  syllablesArray: string[]
-}
+type SyllablProps = {}
+type SyllablState = {
+  syllables: string[]
+};
 
 /**
  * 
  */
-class Spell extends React.Component<SyllablProps> {
-  static syllables: string[]
-  static spell: JSX.Element[]
+class Spell extends React.Component<SyllablProps, SyllablState> {
+  spell: JSX.Element[] = []
+  timerID: any
 
   constructor (props: SyllablProps) {
     super (props)
-    Spell.syllables = props.syllablesArray
+    this.state = {
+      syllables: getWordSyllables(config.word_length, config.level, config.extended)
+    }
   }
 
   componentDidMount () {
-
+    this.timerID = setInterval(
+      () => this.tick(),
+      config.speed * 1000
+    );
   }
 
   componentWillUnmount () {
+    clearInterval(this.timerID)
+  }
 
+  tick() {
+    this.setState({
+      syllables: getWordSyllables(config.word_length, config.level, config.extended)
+    });
   }
 
   render() {
-    // First letter uppercase
-    Spell.syllables[0] = Spell.syllables[0][0].toUpperCase() + Spell.syllables[0].substring(1);
     // Wrap syllables in span elements
-    Spell.spell = Spell.syllables.map((syllable: string, i: number) => {
+    this.spell = this.state.syllables.map((syllable: string, i: number) => {
       let className: string = "syllable";
       return <span className={className} key={i}>{syllable}</span>
     });
     return (
       <h1>
-        {Spell.spell}
+        {this.spell}
         <span>!</span>
       </h1>
     )
   }
 }
 
-function tick() {
-  // Array of syllables
-  const syllable: string[] = [];
-  for (let i = 0; i < config.word_length; i++) {
-    syllable.push(getRandomSyllable(config.level, config.extended));
-  }
-  
-  ReactDOM.render(
-    <Spell syllablesArray={syllable} />,
-    document.getElementById('root')
-  );
-}
-
-tick();
-setInterval(() => tick(), (config.speed * 1000));
+ReactDOM.render(
+  <Spell />,
+  document.getElementById('root')
+);
