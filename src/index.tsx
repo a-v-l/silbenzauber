@@ -77,23 +77,27 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
   }
 
   componentDidMount () {
-    this.timerID = setInterval(
-      () => this.tick(),
-      config.speed * 1000
-    );
+    document.addEventListener("keydown", (e) => {
+      this.newWord(e)
+    }, false);
+    document.addEventListener("mousedown", (e) => {
+      this.newWord(e)
+    }, false);
   }
 
   componentWillUnmount () {
-    clearInterval(this.timerID)
   }
 
-  tick() {
-    this.setState({
-      syllables: getWordSyllables(config.word_length, config.level, config.extended)
-    });
+  newWord(e: KeyboardEvent | MouseEvent) {
+    if (e.type === 'mousedown' || (e as KeyboardEvent).key === ' ') {
+      e.preventDefault()
+      this.setState({
+        syllables: getWordSyllables(config.word_length, config.level, config.extended)
+      });
+    }
   }
 
-  render() {
+  render () {
     // Wrap syllables in span elements
     this.spell = this.state.syllables.map((syllable: string, i: number) => {
       let className: string = "syllable";
