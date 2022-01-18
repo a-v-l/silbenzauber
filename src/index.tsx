@@ -5,7 +5,6 @@ import './index.css';
 const vokale: string[] = ['a', 'e', 'i', 'o', 'u', 'ei'];
 const umlaute: string[] = ['ä', 'ö', 'ü'];
 const consonant: string[] = ['d', 'r', 'w', 'p', 's', 'l', 'm', 't', 'n', 'z', 'w', 'f', 'k', 'g', 'h', 'j'];
-// const consonant: string[] = ['m', 'l', 't', 'r', 'b', 'n', 'p', 'd', 's', 'z', 'w', 'f', 'k', 'g', 'h', 'j'];
 
 /**
  * 
@@ -32,59 +31,49 @@ function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-const level: number = 9;
-const speed: number = 7;
-const extended: boolean = false;
-const word_length = 2;
+const config: { level: number; speed: number; extended: boolean; word_length: number } = {
+  level: 9,
+  speed: 7,
+  extended: false,
+  word_length: 2
+}
 
+/**
+ * 
+ */
+function Spell(props: any) {
+  // let syllables: string[] = props.syllablesArray;
+
+  let syllables: string[] = props.syllablesArray;
+  
+  // First letter uppercase
+  syllables[0] = syllables[0][0].toUpperCase() + syllables[0].substring(1);
+  // Wrap syllables in span elements
+  const spell = syllables.map((syllable: string, i: number) => {
+    let className: string = "syllable";
+    return <span className={className} key={i}>{syllable}</span>
+  });
+
+  return (
+    <h1>
+      {spell}
+      <span>!</span>
+    </h1>
+  )
+}
 
 function tick() {
   // Array of syllables
   const syllable: string[] = [];
-  for (let i = 0; i < word_length; i++) {
-    syllable.push(getRandomSyllable(level, extended));
+  for (let i = 0; i < config.word_length; i++) {
+    syllable.push(getRandomSyllable(config.level, config.extended));
   }
-  // First letter uppercase
-  syllable[0] = syllable[0][0].toUpperCase() + syllable[0].substring(1);
-  // Wrap syllables in span elements
-  const spell = syllable.map((syllable, i) => {
-    let className: string = "syllable";
-    if (i === 0) {
-      className += ' active';
-    }
-    return <span className={className} key={i}>{syllable}</span>
-  });
   
-  const element = (
-    <h1>
-     {spell}
-     <span>!</span>
-    </h1>
-  );
   ReactDOM.render(
-    element,
+    <Spell syllablesArray={syllable} />,
     document.getElementById('root')
   );
 }
 
 tick();
-setInterval(() => tick(), (speed * 1000));
-
-
-
-/*
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
-*/
+setInterval(() => tick(), (config.speed * 1000));
