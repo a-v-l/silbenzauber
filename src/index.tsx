@@ -33,33 +33,50 @@ function getRandomInt(max: number) {
 
 const config: { level: number; speed: number; extended: boolean; word_length: number } = {
   level: 9,
-  speed: 7,
+  speed: 2,
   extended: false,
   word_length: 2
+}
+
+type SyllablProps = {
+  syllablesArray: string[]
 }
 
 /**
  * 
  */
-function Spell(props: any) {
-  // let syllables: string[] = props.syllablesArray;
+class Spell extends React.Component<SyllablProps> {
+  static syllables: string[]
+  static spell: JSX.Element[]
 
-  let syllables: string[] = props.syllablesArray;
-  
-  // First letter uppercase
-  syllables[0] = syllables[0][0].toUpperCase() + syllables[0].substring(1);
-  // Wrap syllables in span elements
-  const spell = syllables.map((syllable: string, i: number) => {
-    let className: string = "syllable";
-    return <span className={className} key={i}>{syllable}</span>
-  });
+  constructor (props: SyllablProps) {
+    super (props)
+    Spell.syllables = props.syllablesArray
+  }
 
-  return (
-    <h1>
-      {spell}
-      <span>!</span>
-    </h1>
-  )
+  componentDidMount () {
+
+  }
+
+  componentWillUnmount () {
+
+  }
+
+  render() {
+    // First letter uppercase
+    Spell.syllables[0] = Spell.syllables[0][0].toUpperCase() + Spell.syllables[0].substring(1);
+    // Wrap syllables in span elements
+    Spell.spell = Spell.syllables.map((syllable: string, i: number) => {
+      let className: string = "syllable";
+      return <span className={className} key={i}>{syllable}</span>
+    });
+    return (
+      <h1>
+        {Spell.spell}
+        <span>!</span>
+      </h1>
+    )
+  }
 }
 
 function tick() {
