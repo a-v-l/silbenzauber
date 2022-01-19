@@ -9,9 +9,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-  color: #e3aefd;
-  color: #2e2eff;
-  background-color: #250734;
+  color: #fff;
   background-color: #000;
 }
 
@@ -21,8 +19,9 @@ html, body {
   align-items: center;
   justify-content: center;
   font-size: 10vw;
-  /* text-shadow: 0 0 50px rgb(255 255 255 / 50%), 0 0 5px #000; */
   letter-spacing: 0.05em;
+  cursor: crosshair;
+  color: #2e2eff;
 }
 
 h1 {
@@ -33,35 +32,85 @@ h1 span:not(:last-of-type) {
   border-style: solid;
   border-radius: 50%;
   border-width: 5px;
-  border-color: transparent transparent #e3aefd;
   border-color: transparent transparent #2e2eff;
   display: inline-block;
   line-height: 1.2;
-  /* position: relative;
-  padding-bottom: 0.125em; */
   padding: 0 0.125em;
   margin: 0 -0.125em;
   transition: text-shadow 0.5s;
 }
 
-/* h1 span.active {
-  text-shadow: 0 0 100px #fff, 0 0 100px #fff, 0 0 5px #000;
-} */
-
 h1 span:nth-of-type(2n) {
-  color: #ff025e;
-  border-color: transparent transparent #ff025e;
   color: #ff0202;
   border-color: transparent transparent #ff0202;
 }
 
-/* h1 span:not(:last-of-type)::before {
-  content: "";
+#menu {
   position: absolute;
-  width: 100%;
-  height: 0.3em;
+  right: 0.5rem;
+  top: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+#menu:hover {
+  opacity: 1;
+}
+
+#menu li {
+  display: inline-block;
+}
+
+#menu button {
+  appearance: none;
+  background: none transparent;
+  border: 0 none;
+  position: relative;
+  cursor: pointer;
+  padding: 0.25rem;
+  overflow: hidden;
+  outline: 0 none;
+}
+
+#menu button:hover {
+  overflow: visible;
+}
+
+#menu button::after {
+  content: attr(data-tip);
+  color: #000;
+  background-color: #fff;
+  padding: 0.15rem 0.25rem;
+  position: absolute;
+  right: 0.5rem;
+  top: 100%;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#menu button::before {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  border: 5px solid #fff;
+  border-color: transparent transparent #fff;
+  position: absolute;
   bottom: 0;
-  background-image: radial-gradient(transparent 0% 67%, red 68% calc(67% + 4px), transparent calc(67% + 4px));
-  background-size: 100% 200%;
-  background-position: bottom;
-} */
+  left: 0.75rem;
+  opacity: 0;
+}
+
+#menu button:hover::after, #menu button:hover::before {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}

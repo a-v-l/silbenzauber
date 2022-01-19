@@ -50,7 +50,7 @@ function getWordSyllables(word_length: number, level: number, extended: boolean)
   return syllables
 }
 
-const config: { level: number; speed: number; extended: boolean; word_length: number } = {
+let config: { level: number; speed: number; extended: boolean; word_length: number } = {
   level: 9,
   speed: 5,
   extended: false,
@@ -80,7 +80,7 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
     document.addEventListener("keydown", (e) => {
       this.newWord(e)
     }, false);
-    document.addEventListener("mousedown", (e) => {
+    document.getElementById('root')!.addEventListener("mousedown", (e) => {
       this.newWord(e)
     }, false);
   }
@@ -116,3 +116,11 @@ ReactDOM.render(
   <Spell />,
   document.getElementById('root')
 );
+
+document.querySelectorAll('#menu button').forEach((button) => {
+  button.addEventListener('click', () => {
+    const target = button.getAttribute('data-target')
+    document.querySelector('aside')?.classList.remove('active', 'config', 'info')
+    document.querySelector('aside')?.classList.add('active', target!)
+  });
+})
