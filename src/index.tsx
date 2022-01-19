@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 const vokale: string[] = ['a', 'e', 'i', 'o', 'u', 'ei'];
@@ -113,14 +115,17 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
 }
 
 ReactDOM.render(
-  <Spell />,
+  <>
+    <div id="menu"></div>
+    <Spell />
+  </>,
   document.getElementById('root')
 );
 
-document.querySelectorAll('#menu button').forEach((button) => {
-  button.addEventListener('click', () => {
-    const target = button.getAttribute('data-target')
-    document.querySelector('aside')?.classList.remove('active', 'config', 'info')
-    document.querySelector('aside')?.classList.add('active', target!)
-  });
-})
+// document.querySelectorAll('#menu button').forEach((button) => {
+//   button.addEventListener('click', () => {
+//     const target = button.getAttribute('data-target')
+//     document.querySelector('aside')?.classList.remove('active', 'config', 'info')
+//     document.querySelector('aside')?.classList.add('active', target!)
+//   });
+// })
