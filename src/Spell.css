@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+
+#spell {
+  background-color: #000;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#spell h1 {
+  color: #2e2eff;
+  font-family: 'Irish Grover', serif;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+}
+
+#spell h1 span:not(:last-of-type) {
+  border-style: solid;
+  border-radius: 50%;
+  border-width: 5px;
+  border-color: transparent transparent #2e2eff;
+  display: inline-block;
+  line-height: 1.2;
+  padding: 0 0.125em;
+  margin: 0 -0.125em;
+  transition: text-shadow 0.5s;
+}
+
+#spell h1 span:nth-of-type(2n) {
+  color: #ff0202;
+  border-color: transparent transparent #ff0202;
+}
