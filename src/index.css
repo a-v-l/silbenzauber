@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,74 +11,4 @@ html, body {
 #root {
   height: 100%;
   width: 100%;
-}
-
-#menu {
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  opacity: 0.5;
-  transition: opacity 0.3s;
-}
-
-#menu:hover {
-  opacity: 1;
-}
-
-#menu li {
-  display: inline-block;
-}
-
-#menu button {
-  appearance: none;
-  background: none transparent;
-  border: 0 none;
-  position: relative;
-  cursor: pointer;
-  padding: 0.25rem;
-  overflow: hidden;
-  outline: 0 none;
-}
-
-#menu button:hover {
-  overflow: visible;
-}
-
-#menu button::after {
-  content: attr(data-tip);
-  color: #000;
-  background-color: #fff;
-  padding: 0.15rem 0.25rem;
-  position: absolute;
-  right: 0.5rem;
-  top: 100%;
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-#menu button::before {
-  content: "";
-  display: block;
-  height: 0;
-  width: 0;
-  border: 5px solid #fff;
-  border-color: transparent transparent #fff;
-  position: absolute;
-  bottom: 0;
-  left: 0.75rem;
-  opacity: 0;
-}
-
-#menu button:hover::after, #menu button:hover::before {
-  opacity: 1;
-  transition: opacity 0.3s;
-}
-
-svg {
-  width: 1.5rem;
-  height: 1.5rem;
 }

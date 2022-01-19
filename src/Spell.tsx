@@ -74,7 +74,7 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
     document.addEventListener("keydown", (e) => {
       this.newWord(e)
     }, false);
-    document.addEventListener("mousedown", (e) => {
+    document.getElementById('spell')!.addEventListener("mousedown", (e) => {
       this.newWord(e)
     }, false);
   }

@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Spell from './Spell'
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Menu from './Menu'
 import './index.css';
 
 ReactDOM.render(
   <>
-    <div id="menu"></div>
+    <Menu />
     <Spell />
   </>,
   document.getElementById('root')
