@@ -2,24 +2,32 @@ import React from 'react'
 import Config from './Config'
 import './Spell.css'
 
-const vokale: string[] = ['a', 'e', 'i', 'o', 'u', 'ei']
-const umlaute: string[] = ['ä', 'ö', 'ü']
-const consonant: string[] = ['d', 'r', 'w', 'p', 's', 'l', 'm', 't', 'n', 'z', 'w', 'f', 'k', 'g', 'h', 'j']
+type Char = {
+  [index: string]: boolean
+}
+
+let vokale = filterConfig(Config.vokale)! as string[]
+let consonants = filterConfig(Config.consonant)! as string[]
+let umlaute = filterConfig(Config.umlaute)! as string[]
+
+function filterConfig(config: Char) {
+  return Object.keys(config).map((x) => {
+    return config[x] ? x : false
+  }).filter((x) => x) as string[]
+}
 
 /**
  * 
- * @param level - How many different consonants should be included
- * @param extended - Use umlaute as well?
  * @returns {sting} A syllable containing a consonant and a vokal or an umlaut
  */
-function getRandomSyllable(level: number, extended: boolean) {
-  const index_c = getRandomInt(level)
+function getRandomSyllable() {
+  const index_c = getRandomInt(consonants.length)
   let vokal: string[] = vokale
-  if (extended) {
-    vokal = [...vokale, ...vokale, ...umlaute, ...vokale]
+  if (umlaute.length >= 1) {
+    vokal = [...vokal, ...vokal, ...umlaute, ...vokal]
   }
   const index_v = getRandomInt(vokal.length)
-  return consonant[index_c] + vokal[index_v]
+  return consonants[index_c] + vokal[index_v]
 }
 
 /**
@@ -34,15 +42,13 @@ function getRandomInt(max: number) {
 /**
  * 
  * @param word_length - How many syllables should the word contain
- * @param level - How many different consonants should be included
- * @param extended - Use umlaute as well?
  * @returns {array} Array of syllables. The first letter of the first array is uppercase.
  */
-function getWordSyllables(word_length: number, level: number, extended: boolean) {
+function getWordSyllables(word_length: number) {
   // Array of syllables
   let syllables: string[] = []
   for (let i = 0; i < word_length; i++) {
-    syllables.push(getRandomSyllable(level, extended))
+    syllables.push(getRandomSyllable())
   }
   // First letter uppercase
   syllables[0] = syllables[0][0].toUpperCase() + syllables[0].substring(1)
@@ -66,7 +72,7 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
   constructor (props: SyllablProps) {
     super (props)
     this.state = {
-      syllables: getWordSyllables(Config.word_length, Config.level, Config.extended)
+      syllables: getWordSyllables(Config.word_length)
     }
   }
 
@@ -86,7 +92,7 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
     if (e.type === 'mousedown' || (e as KeyboardEvent).key === ' ') {
       e.preventDefault()
       this.setState({
-        syllables: getWordSyllables(Config.word_length, Config.level, Config.extended)
+        syllables: getWordSyllables(Config.word_length)
       })
     }
   }

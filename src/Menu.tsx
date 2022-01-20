@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas'
+import Check from './Check'
+import Config from './Config'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Menu.css'
 
+type Char = {
+  [index: string]: boolean
+}
 type MenuState = {
   menu: boolean,
-  section: string
+  section: string,
+  charsections: {
+    vokale: Char,
+    umlaute: Char,
+    consonant: Char
+  }
 }
 type Titles = {
   [index: string]: string
@@ -22,8 +32,22 @@ class Menu extends React.Component<{}, MenuState> {
     super(props)
     this.state = {
       menu: false,
-      section: 'config'
+      section: 'config',
+      charsections: {
+        vokale: Config.vokale,
+        umlaute: Config.umlaute,
+        consonant: Config.consonant
+      }
     }
+  }
+
+  buildCheckElements = (chars: Char, type: "vokale" | "umlaute" | "consonant") => {
+    return Object.keys(chars).map((x) => {
+      const id = "char-" + x
+      return (
+        <Check id={id} key={id} caption={x} onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.saveConfig(e, type)} checked={chars[x]} />
+      )
+    })
   }
 
   handleClose = () => {
@@ -36,6 +60,18 @@ class Menu extends React.Component<{}, MenuState> {
       menu: true,
       section: section
     })
+  }
+
+  saveConfig = (e: ChangeEvent<HTMLInputElement>, type: "vokale" | "umlaute" | "consonant") => {
+    this.setState(prevState =>({
+      charsections: {
+        ...prevState.charsections,
+        [type]: {
+          ...prevState.charsections[type],
+          [e.target.value]: e.target.checked}
+      }
+    }))
+    // console.log(this.state.charsections)
   }
 
   render () {
@@ -51,16 +87,22 @@ class Menu extends React.Component<{}, MenuState> {
           </Offcanvas.Header>
           <Offcanvas.Body>
             {this.state.section === 'config' ? (
-              <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                <input type="checkbox" className="btn-check" id="btncheck1" autoComplete="off" />
-                <label className="btn btn-outline-primary" htmlFor="btncheck1">Checkbox 1</label>
-
-                <input type="checkbox" className="btn-check" id="btncheck2" autoComplete="off" />
-                <label className="btn btn-outline-primary" htmlFor="btncheck2">Checkbox 2</label>
-
-                <input type="checkbox" className="btn-check" id="btncheck3" autoComplete="off" />
-                <label className="btn btn-outline-primary" htmlFor="btncheck3">Checkbox 3</label>
-              </div>
+              <>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    <div className="fw-bold">Vokale</div>
+                    {this.buildCheckElements(this.state.charsections.vokale, 'vokale')}
+                  </li>
+                  <li className="list-group-item">
+                    <div className="fw-bold">Umlaute</div>
+                    {this.buildCheckElements(this.state.charsections.umlaute, 'umlaute')}
+                  </li>
+                  <li className="list-group-item">
+                    <div className="fw-bold">Konsonante</div>
+                    {this.buildCheckElements(this.state.charsections.consonant, 'consonant')}
+                  </li>
+                </ul>
+              </>
             ) : (
               <p>Hallo!</p>
             )}
