@@ -23,7 +23,7 @@
     border: 0 none;
     position: relative;
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0.25rem 0.25rem 0.5rem;
     overflow: hidden;
     outline: 0 none;
 }

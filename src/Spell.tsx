@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 import Config from './Config'
-import './Spell.css';
+import './Spell.css'
 
-const vokale: string[] = ['a', 'e', 'i', 'o', 'u', 'ei'];
-const umlaute: string[] = ['ä', 'ö', 'ü'];
-const consonant: string[] = ['d', 'r', 'w', 'p', 's', 'l', 'm', 't', 'n', 'z', 'w', 'f', 'k', 'g', 'h', 'j'];
+const vokale: string[] = ['a', 'e', 'i', 'o', 'u', 'ei']
+const umlaute: string[] = ['ä', 'ö', 'ü']
+const consonant: string[] = ['d', 'r', 'w', 'p', 's', 'l', 'm', 't', 'n', 'z', 'w', 'f', 'k', 'g', 'h', 'j']
 
 /**
  * 
@@ -13,13 +13,13 @@ const consonant: string[] = ['d', 'r', 'w', 'p', 's', 'l', 'm', 't', 'n', 'z', '
  * @returns {sting} A syllable containing a consonant and a vokal or an umlaut
  */
 function getRandomSyllable(level: number, extended: boolean) {
-  const index_c = getRandomInt(level);
-  let vokal: string[] = vokale;
+  const index_c = getRandomInt(level)
+  let vokal: string[] = vokale
   if (extended) {
-    vokal = [...vokale, ...vokale, ...umlaute, ...vokale];
+    vokal = [...vokale, ...vokale, ...umlaute, ...vokale]
   }
-  const index_v = getRandomInt(vokal.length);
-  return consonant[index_c] + vokal[index_v];
+  const index_v = getRandomInt(vokal.length)
+  return consonant[index_c] + vokal[index_v]
 }
 
 /**
@@ -28,7 +28,7 @@ function getRandomSyllable(level: number, extended: boolean) {
  * @returns {number} random numer [0-max]
  */
 function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
+  return Math.floor(Math.random() * max)
 }
 
 /**
@@ -40,9 +40,9 @@ function getRandomInt(max: number) {
  */
 function getWordSyllables(word_length: number, level: number, extended: boolean) {
   // Array of syllables
-  let syllables: string[] = [];
+  let syllables: string[] = []
   for (let i = 0; i < word_length; i++) {
-    syllables.push(getRandomSyllable(level, extended));
+    syllables.push(getRandomSyllable(level, extended))
   }
   // First letter uppercase
   syllables[0] = syllables[0][0].toUpperCase() + syllables[0].substring(1)
@@ -53,7 +53,7 @@ function getWordSyllables(word_length: number, level: number, extended: boolean)
 type SyllablProps = {}
 type SyllablState = {
   syllables: string[]
-};
+}
 
 /**
  * 
@@ -61,7 +61,7 @@ type SyllablState = {
 class Spell extends React.Component<SyllablProps, SyllablState> {
   spell: JSX.Element[] = []
   timerID: any
-  fontsize = { 'fontSize': (30 / ((Config.word_length / 2) + 0.5)) + 'vw' } as React.CSSProperties; // word_length 1=>30vw; 2=>20vw; 3=15vw; 4=11vw
+  fontsize: React.CSSProperties = { 'fontSize': (30 / ((Config.word_length / 2) + 0.5)) + 'vw' } // word_length 1=>30vw 2=>20vw 3=15vw 4=11vw
 
   constructor (props: SyllablProps) {
     super (props)
@@ -73,10 +73,10 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
   componentDidMount () {
     document.addEventListener("keydown", (e) => {
       this.newWord(e)
-    }, false);
+    }, false)
     document.getElementById('spell')!.addEventListener("mousedown", (e) => {
       this.newWord(e)
-    }, false);
+    }, false)
   }
 
   componentWillUnmount () {
@@ -87,16 +87,16 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
       e.preventDefault()
       this.setState({
         syllables: getWordSyllables(Config.word_length, Config.level, Config.extended)
-      });
+      })
     }
   }
 
   render () {
     // Wrap syllables in span elements
     this.spell = this.state.syllables.map((syllable: string, i: number) => {
-      let className: string = "syllable";
+      let className: string = "syllable"
       return <span className={className} key={i}>{syllable}</span>
-    });
+    })
     return (
       <div id="spell">
         <h1 style={this.fontsize}>
@@ -108,4 +108,4 @@ class Spell extends React.Component<SyllablProps, SyllablState> {
   }
 }
 
-export default Spell;
+export default Spell
