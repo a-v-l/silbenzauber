@@ -8,6 +8,9 @@ import './Menu.css'
 type Char = {
   [index: string]: boolean
 }
+type MenuProbs = {
+  onConfigUpdate: any
+}
 type MenuState = {
   menu: boolean,
   section: string,
@@ -21,14 +24,14 @@ type Titles = {
   [index: string]: string
 }
 
-class Menu extends React.Component<{}, MenuState> {
+class Menu extends React.Component<MenuProbs, MenuState> {
 
   title: Titles = {
     config: 'Einstellungen',
     info: 'Info'
   }
 
-  constructor (props: {}) {
+  constructor (props: MenuProbs) {
     super(props)
     this.state = {
       menu: false,
@@ -45,7 +48,7 @@ class Menu extends React.Component<{}, MenuState> {
     return Object.keys(chars).map((x) => {
       const id = "char-" + x
       return (
-        <Check id={id} key={id} caption={x} onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.saveConfig(e, type)} checked={chars[x]} />
+        <Check id={id} key={id} caption={x} onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.saveChars(e, type)} checked={chars[x]} />
       )
     })
   }
@@ -62,16 +65,24 @@ class Menu extends React.Component<{}, MenuState> {
     })
   }
 
-  saveConfig = (e: ChangeEvent<HTMLInputElement>, type: "vokale" | "umlaute" | "consonant") => {
+  saveChars = (e: ChangeEvent<HTMLInputElement>, type: "vokale" | "umlaute" | "consonant") => {
     this.setState(prevState =>({
       charsections: {
         ...prevState.charsections,
         [type]: {
           ...prevState.charsections[type],
-          [e.target.value]: e.target.checked}
+          // [e.target.value]: !prevState.charsections[type][e.target.value]
+          [e.target.value]: e.target.checked
+        }
       }
-    }))
-    // console.log(this.state.charsections)
+    }), () => {
+      this.props.onConfigUpdate({
+        word_length: 2,
+        vokale: this.state.charsections.vokale,
+        umlaute: this.state.charsections.umlaute,
+        consonant: this.state.charsections.consonant
+      })
+    })
   }
 
   render () {

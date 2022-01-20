@@ -3,7 +3,6 @@ type Char = {
 }
 
 class Config {
-  static speed: number = 5
   static word_length: number = 2
   static vokale: Char = {
     a: true,
@@ -13,11 +12,12 @@ class Config {
     u: true,
     ei: false,
     el: false,
+    eu: false,
     on: false,
     in: false
   }
   static umlaute: Char = {
-    ä: true,
+    ä: false,
     ö: false,
     ü: false
   }
