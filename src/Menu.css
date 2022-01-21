@@ -13,10 +13,6 @@
     opacity: 1;
 }
 
-#menu li {
-    display: inline-block;
-}
-
 #menu button {
     appearance: none;
     background: none transparent;
@@ -73,6 +69,50 @@
     color: #000;
 }
 
+.offcanvas-header {
+    align-items: flex-start;
+}
+
+.offcanvas-title {
+    padding-left: 1rem;
+}
+
+.offcanvas-title h2 {
+    margin: 0;
+}
+
+.offcanvas-title p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.offcanvas-title span {
+    display: inline-block;
+    font-size: 0.8em;
+    transform: translateY(0.8em);
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .offcanvas-body .btn {
     margin: 0 0.25rem 0.25rem 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.05rem 0.4rem;
+}
+
+.offcanvas-body .about {
+    padding-left: 1rem;
+}
+
+.offcanvas-body .about p {
+    margin: 0 0.5rem 0.5rem;
+}
+
+.offcanvas-body .about a {
+    color: inherit;
 }
