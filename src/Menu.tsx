@@ -89,6 +89,11 @@ class Menu extends React.Component<MenuProbs, MenuState> {
           <Offcanvas.Body>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
+                <div className="fw-bold">Anleitung</div>
+                <p>Einfach in das Browserfenster klicken oder die Leertaste drücken um ein neues Silbenzauberwort zu generieren!</p>
+                <p>Hier unten können die zu verwendenden Buchstaben ausgewählt werden. Die Silben fangen immer mit einem Konsonant an und enden mit einem Vokal oder einem Umlaut</p>
+              </li>
+              <li className="list-group-item">
                 <div className="fw-bold">Vokale</div>
                 {this.buildCheckElements(this.state.charsections.vokale, 'vokale')}
               </li>
