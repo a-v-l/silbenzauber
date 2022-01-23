@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import Check from './Check'
 import Config from './Config'
+import fscreen from 'fscreen';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Menu.css'
 
@@ -13,6 +14,7 @@ type MenuProbs = {
 }
 type MenuState = {
   menu: boolean,
+  fullscreen: boolean,
   charsections: {
     vokale: Char,
     umlaute: Char,
@@ -26,6 +28,7 @@ class Menu extends React.Component<MenuProbs, MenuState> {
     super(props)
     this.state = {
       menu: false,
+      fullscreen: false,
       charsections: {
         vokale: Config.vokale,
         umlaute: Config.umlaute,
@@ -43,15 +46,21 @@ class Menu extends React.Component<MenuProbs, MenuState> {
     })
   }
 
-  handleClose = () => {
-    this.setState({
-      menu: false
-    })
-  }
-  handleShow = (section: string) => {
-    this.setState({
-      menu: true
-    })
+  handleToggle = (section: string, action: boolean) => {
+    if ((section === 'fullscreen')) {
+      if (action) {
+        fscreen.requestFullscreen(document.body);
+      } else {
+        fscreen.exitFullscreen();
+      }
+      this.setState({
+        fullscreen: action
+      })
+    } else {
+      this.setState({
+        menu: action
+      })
+    }
   }
 
   saveChars = (e: ChangeEvent<HTMLInputElement>, type: "vokale" | "umlaute" | "consonant") => {
@@ -77,9 +86,15 @@ class Menu extends React.Component<MenuProbs, MenuState> {
     return (
       <>
         <div id="menu">
-          <button onClick={() => this.handleShow('config')} data-tip="Einstellungen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#fff" d="m487 316-42-25c4-23 4-47 0-70l42-25c5-3 7-8 6-14-11-35-30-68-55-94-4-4-10-5-15-3l-42 25c-18-15-39-27-61-35V26c0-6-4-11-9-12-37-8-75-8-110 0-5 1-9 6-9 12v49c-22 8-43 20-61 35L89 86c-5-3-11-2-15 2-25 26-44 59-55 94-1 6 1 12 6 14l42 25c-4 23-4 47 0 70l-42 25c-5 3-7 8-6 14 11 35 30 68 55 94 4 4 10 5 15 3l42-25c18 15 39 27 61 35v49c0 6 4 11 10 12 36 8 74 8 109 0 5-1 9-6 9-12v-49c22-8 43-20 61-35l43 25c4 2 11 2 14-3 25-26 44-59 55-94 2-6-1-12-6-14zm-231 20a80 80 0 1 1 0-160 80 80 0 0 1 0 160z"/></svg></button>
+          <button style={{ display: this.state.fullscreen ? "none" : "inline-block" }} onClick={() => this.handleToggle('fullscreen', true)} data-tip="Vollbildmodus aktivieren"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#fff" d="M448 344v112a24 24 0 0 1-24 24H312c-21 0-32-26-17-41l36-36-107-107-107 107 36 36c15 15 4 41-17 41H24a24 24 0 0 1-24-24V344c0-21 26-32 41-17l36 36 107-107L77 149l-36 36c-15 15-41 4-41-17V56a24 24 0 0 1 24-24h112c21 0 32 26 17 41l-36 36 107 107 107-107-36-36c-15-15-4-41 17-41h112a24 24 0 0 1 24 24v112c0 21-26 32-41 17l-36-36-107 107 107 107 36-36c15-15 41-4 41 17z"/></svg></button>
+          {fscreen.fullscreenEnabled && (
+            <>
+              <button style={{ display: this.state.fullscreen ? "inline-block" : "none" }} onClick={() => this.handleToggle('fullscreen', false)} data-tip="Vollbildmodus verlassen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#fff" d="M200 288H88c-21 0-32 26-17 41l33 31-99 99c-6 7-6 17 0 23l25 25c6 7 17 7 23 0l99-99 31 33c15 15 41 4 41-17V312c0-13-11-24-24-24zm112-64h112c21 0 32-26 17-41l-33-31 99-99c7-6 7-17 0-23L482 5c-6-7-17-7-23 0l-99 99-31-33c-15-15-41-4-41 17v112c0 13 11 24 24 24zm96 136 33-31c15-15 4-41-17-41H312c-13 0-24 11-24 24v112c0 21 26 32 41 17l31-33 99 99c7 7 17 7 23 0l25-25c7-6 7-16 0-23l-99-99zM183 71l-31 33L53 5c-6-6-17-6-23 0L5 30c-7 6-7 17 0 23l99 99-33 31c-15 15-4 41 17 41h112c13 0 24-11 24-24V88c0-21-26-32-41-17z"/></svg></button>
+              <button onClick={() => this.handleToggle('config', true)} data-tip="Einstellungen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#fff" d="m487 316-42-25c4-23 4-47 0-70l42-25c5-3 7-8 6-14-11-35-30-68-55-94-4-4-10-5-15-3l-42 25c-18-15-39-27-61-35V26c0-6-4-11-9-12-37-8-75-8-110 0-5 1-9 6-9 12v49c-22 8-43 20-61 35L89 86c-5-3-11-2-15 2-25 26-44 59-55 94-1 6 1 12 6 14l42 25c-4 23-4 47 0 70l-42 25c-5 3-7 8-6 14 11 35 30 68 55 94 4 4 10 5 15 3l42-25c18 15 39 27 61 35v49c0 6 4 11 10 12 36 8 74 8 109 0 5-1 9-6 9-12v-49c22-8 43-20 61-35l43 25c4 2 11 2 14-3 25-26 44-59 55-94 2-6-1-12-6-14zm-231 20a80 80 0 1 1 0-160 80 80 0 0 1 0 160z"/></svg></button>
+            </>
+          )}
         </div>
-        <Offcanvas show={this.state.menu} onHide={this.handleClose} placement='end'>
+        <Offcanvas show={this.state.menu} onHide={() => this.handleToggle('config', false)} placement='end'>
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>
               <h2>Silben<span>&#65078;</span>Zauber</h2>

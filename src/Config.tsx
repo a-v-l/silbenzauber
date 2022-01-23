@@ -33,6 +33,7 @@ class Config {
     n: true,
     z: true,
     f: true,
+    b: false,
     k: false,
     g: false,
     h: false,
